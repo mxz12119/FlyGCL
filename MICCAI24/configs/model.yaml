@@ -1,0 +1,13 @@
+dataset: 'Hemibrain'
+path: '/data0/ljc/project/MICCAI24/data/HemiBrain'
+task: 'link_prediction' #'link_prediction' or 'neuron_classification'
+model:
+  name: 'flygcl'
+  learning_rate: 0.001
+  hidden_size: 196
+  num_layers: 2
+  device: 'cuda'
+training:
+  epochs: 100
+  batch_size: 400
+
