@@ -19,7 +19,13 @@ network. We leverage graph augmentation methods to generate various contrastive 
 <br>
 
 ## Dataset
-The Dataset has been uploaded to google drive:[https://drive.google.com/drive/folders/1QNu7A0NREiR5eTowzqODpONfgbiaY3Bl?usp=sharing]
+The Dataset has been uploaded to google drive:[https://drive.google.com/drive/folders/1QNu7A0NREiR5eTowzqODpONfgbiaY3Bl?usp=sharing].  
+The final structure is as follows:
+data
+├── HemiBrain
+│   └── raw
+└── Manc
+    └── raw
 
 ## Main Technologies
 
