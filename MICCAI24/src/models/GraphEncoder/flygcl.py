@@ -5,7 +5,7 @@ import GCL.losses as L
 import GCL.augmentors as A
 from GCL.models import DualBranchContrast
 from torch.optim import Adam
-from data import data_loader
+
 
 class GConv(torch.nn.Module):
     def __init__(self, input_dim, node_num, hidden_dim, activation, num_layers):

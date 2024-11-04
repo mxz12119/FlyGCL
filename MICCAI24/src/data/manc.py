@@ -103,6 +103,8 @@ class Manc(InMemoryDataset):
             self.cache_type_dim=len(label2ID.keys())
             return self.cache_type_dim
 
+    def transfer_edge(neu2ID, edge_index):
+        return torch.tensor([neu2ID.get(x.item(), 0) for x in edge_index.flatten()]).reshape(edge_index.shape)
     @staticmethod
     def read_data(raw_dir):
         res=pd.read_csv(osp.join(raw_dir,'neurons.csv')) 
@@ -130,9 +132,9 @@ class Manc(InMemoryDataset):
 
         x=torch.nn.functional.one_hot(y)
         x=x.to(dtype=torch.float32)
-
+        edge_index = transfer_edge(neu2ID, edge_index)
         return Data(x=x,edge_index=edge_index,y=y,edge_attr=edge_attr,neu2ID=neu2ID,label2ID=label2ID)
-
+    
     def process(self):
         data = self.read_data(self.raw_dir)
         data = data if self.pre_transform is None else self.pre_transform(data)
@@ -150,3 +152,5 @@ class Manc(InMemoryDataset):
         raise NotImplemented
     def __repr__(self) -> str:
         return 'Manc'
+def transfer_edge(neu2ID, edge_index):
+    return torch.tensor([neu2ID.get(x.item(), 0) for x in edge_index.flatten()]).reshape(edge_index.shape)

@@ -6,7 +6,7 @@ from sklearn.metrics import accuracy_score, roc_auc_score, f1_score
 from torch_geometric.data import Data
 from torch.optim import Adam
 import yaml
-from .utils import dict_sequential
+import tqdm
 from tensorboardX import SummaryWriter
 
 class Base_Trainer:
@@ -123,8 +123,10 @@ def train_classify(pair_deco,train_loader,opt,z,loss):
     for batch in train_loader:
         opt.zero_grad()
         test_x,test_y=batch
+        
         y_pred=pair_deco(test_x)
-        loss=loss(y_pred,test_y)
-        loss.backward()
+  
+        losses=loss(y_pred,test_y)
+        losses.backward()
         opt.step()
-        total_loss+=loss.detach().item()
+        total_loss+=losses.detach().item()

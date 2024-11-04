@@ -61,12 +61,13 @@ class LinkPred_Loader:
 
 
 class NeuronClassDataLoader:
-    def __init__(self, config, dataset: InMemoryDataset):
+    def __init__(self, config, dataset: InMemoryDataset, z):
         self.dataset = dataset
         self.loader_config = config
         self.device = config['device']
         self.batch_size = config.get('batch_size', 64)  
         self.step = 0
+        self.z = z
 
     def __iter__(self):
         self.step = 0
@@ -83,7 +84,7 @@ class NeuronClassDataLoader:
             raise StopIteration
         else:
             batch_nodes = self.batch_indices[self.step]
-            batch = (self.dataset.edge_index.T[batch_nodes], self.dataset.y[batch_nodes])
+            batch = (self.z[batch_nodes], self.dataset.y.T[batch_nodes])
             self.step += 1
         return batch
 

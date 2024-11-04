@@ -6,7 +6,7 @@ from src.data import data_loader
 
 def evaluate_NeuClassify(deco,data,z,device='cpu'):
     deco.eval()
-    test_loader=data_loader.NeuronClassDataLoader({'device':device},data)
+    test_loader=data_loader.NeuronClassDataLoader({'device':device},data,z)
     y_pred_list,y_list=[],[]
     for batch in test_loader:
         test_x,test_y=batch
@@ -15,14 +15,14 @@ def evaluate_NeuClassify(deco,data,z,device='cpu'):
         y_pred_list.append(outcpu)
         y_list.append(true_y)
 
-    total_y_pred=np.concatenate(y_pred_list,axis=0)
-    total_y=np.concatenate(y_list,axis=0)
-
+    total_y_pred = np.concatenate(y_pred_list,axis=0)
+    total_y = np.concatenate(y_list,axis=0)
+    total_y_pred = np.argmax(total_y_pred, axis=1)
     acc=accuracy_score(total_y,total_y_pred)
-    f1_micro=f1_score(total_y,total_y_pred,"micro")
-    f1_macro=f1_score(total_y,total_y_pred,"macro")
+    f1_micro=f1_score(total_y,total_y_pred,average='micro')
+    f1_macro=f1_score(total_y,total_y_pred,average="macro")
     result={'Accuracy':acc,'F1_Micro':f1_micro,'F1_Macro':f1_macro}
-
+    return result
 def evaluate_LinkPred(deco,data,z,device='cpu'):
     deco.eval()
     test_loader=data_loader.LinkPred_Loader({'device':device},data)
@@ -56,3 +56,4 @@ def evaluate_LinkPred(deco,data,z,device='cpu'):
     ROC_curve=roc_curve(total_y,total_y_pred)
     PR_curve=precision_recall_curve(total_y,total_y_pred)
     result={'Accuracy':acc,'Precision':pre,'Recall':rec,'F1':f1,'AUC':auc,'ROC':ROC_curve,'PR-curve':PR_curve,'tau':tau}
+    return result
